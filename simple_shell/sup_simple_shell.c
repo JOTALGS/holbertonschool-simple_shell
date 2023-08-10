@@ -3,23 +3,6 @@
 /**
  * frees - frees the allocated memory.
  * @str1: String to free.
- * @str2: String to free.
- * @str3: String to free.
- *
- * return: (void).
- */
-
-
-void frees(char *str1, char *str2, char *str3)
-{
-	free(str1);
-	free(str2);
-	free(str3);
-}
-
-/**
- * frees - frees the allocated memory.
- * @str1: String to free.
  *
  * return: (void).
  */
@@ -50,40 +33,41 @@ void free_buff(char **buff)
 	size_t in_size = 0;
 	pid_t pid = 0;
 	char *input = NULL;
-	char **buff, *cmnd;
+	char **buff, *cmnd, *path;
+	int fd_isatty = 0;
 
 	/*while loop for the shell's prompt*/
+	path = _getenv();
 	while (1)
 	{
 		printf("%s", prompt);
 
+		fd_isatty = isatty(STDIN_FILENO);
+		
 		ch_read = getline(&input, &in_size, stdin);
-		if (ch_read == -1)/*check if (getline) filed or reached EOF*/
+		if (ch_read == -1 || strcmp(input, "exit\n") == 0)/*check if (getline) filed or reached EOF*/
 		{
 			printf("\n");
 			return (-1);
 		}
 		buff = create_buff(input);
-		cmnd = malloc(sizeof(char) * strlen(buff[0]));
-		if (cmnd == NULL)
-		{
-			free_buff(buff);
-			perror("Memory allocation error\n");
-			return (-1);
-		}
 		cmnd = strdup(buff[0]);
-
 		if (status(buff) == 0)
 			child_process(pid, cmnd, buff);
 		else
 		{
-			if ((*buff = _which(buff)) != NULL)
+			buff[0] = _which(buff, path);
+			if (buff[0] != NULL)
 				child_process(pid, cmnd, buff);
 			else
 				printf("%s: not found\n", cmnd);
-			free_buff(buff);
 		}
+		free(cmnd);
+		if (fd_isatty)
+			continue;
+		else
+			break;
 	}
-	free(cmnd);
+	free_buff(buff);
 	return (0);
  }

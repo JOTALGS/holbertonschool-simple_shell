@@ -1,7 +1,5 @@
 #include "shell.h"
 
-extern char **environ;
-
 /**
  * _getenv - Get an enviroment variable. 
  *
@@ -11,18 +9,20 @@ extern char **environ;
 char *_getenv(void)
 {
     const char *path = "PATH", *delim = "=\n";
-    char *token = NULL;
+    char *token = NULL, *env_cpy = NULL;
     int i = 0;
 
-    token = strtok(environ[i], delim);
-    while ( token != NULL)
+	env_cpy = strdup(environ[i]);
+    token = strtok(env_cpy, delim);
+    while (token != NULL)
     {
+		env_cpy = strdup(environ[i]);
         if (strcmp(token, path) == 0)
         {
             break;
         }
         i++;
-        token = strtok(environ[i], delim);
+        token = strtok(env_cpy, delim);
     }
     token = strtok(NULL, delim);
     return (token);
@@ -35,33 +35,47 @@ char *_getenv(void)
  * Return: 0 (Success).
  */
 
-char *_which(char **buff)
+char *_which(char **buff, char *path)
 {
 	const char *delim = ":\n";
 	struct stat st;
-	char *path, *token = NULL, *test = NULL;
+	char *path_cpy, *token = NULL, *test = NULL;
 
-	path = _getenv();
-	token = strtok(path, delim);
+	path_cpy = strdup(path);
+	token = strtok(path_cpy, delim);
 	while (token != NULL)
 	{
-		test = malloc(sizeof(char) * (strlen(token) + strlen(*buff) + strlen("/") + strlen("/") + 1));
+		test = malloc(sizeof(char) * (strlen(token) + strlen(buff[0]) + 2));
 		if (test == NULL)
 		{
-			perror("Allocate memory error 2\n");
+			perror("Allocate memory error\n");
 			exit(-1);
 		}
 		strcpy(test, token);
 		strcat(test, "/");
-		strcat(test, *buff);
-		printf("\n-->> test: %s\n", test);
+		strcat(test, buff[0]);
 		if (stat(test, &st) == 0)
 		{
-			printf("\n-->> in if\n");
-			break;
+			buff[0] = malloc(sizeof(char) * strlen(test) + 1);
+			buff[0] = strdup(test);
+			free(test);
+			free(path_cpy);
+			return (buff[0]);
 		}
 		token = strtok(NULL, delim);
 	}
-
-	return (test);
+	if (strcmp(buff[0], "\n") == 0)
+	{
+		buff[0] = malloc(sizeof(char) * strlen(test) + 1);
+		buff[0] = strdup(test);
+		free(test);
+		free(path_cpy);
+		return (buff[0]);
+	}
+	else
+	{
+		free(test);
+		free(path_cpy);
+		return (NULL);
+	}
 }
