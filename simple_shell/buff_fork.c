@@ -8,43 +8,40 @@
 
 char **create_buff(char *input)
 {
-	const char *delim = " \n";
+	const char *delim = " \"\n";
 	char *input_cpy = NULL, *token = NULL, **buff = NULL;
 	int num_tok = 0, i = 0;
 
 	
-		input_cpy = strdup(input);
-
-		/*calculates the total numbers of tokens*/
-		token = strtok(input, delim);
-		while (token != NULL)
-		{
-			num_tok++;
-			token = strtok(NULL, delim);
-		}
+	input_cpy = strdup(input);
+	/*calculates the total numbers of tokens*/
+	token = strtok(input, delim);
+	while (token != NULL)
+	{
 		num_tok++;
+		token = strtok(NULL, delim);
+	}
+	num_tok++;
 
-		printf("\n-->> numtok: %d\n", num_tok);
-		if (num_tok == 1)
-			return (NULL);
-		/*allocate memory to hold array of strings*/
-		buff = malloc(sizeof(char *) * num_tok);
-		if (buff == NULL)
-		{
-			free(input);
-			free(input_cpy);
-			perror("Memory allocation error\n");
-			exit(-1);
-		}
+	if (num_tok == 1)
+		return (NULL);
+	/*allocate memory to hold array of strings*/
+	buff = malloc(sizeof(char *) * num_tok);
+	if (buff == NULL)
+	{
+		free(input_cpy);
+		perror("Memory allocation error\n");
+		exit(-1);
+	}
 	/*store each token in each cell of the matrix*/
 	token = strtok(input_cpy, delim);
+	
 	for (i = 0; token != NULL; i++)
 	{
 		/*allocate memory for each token*/
 		buff[i] = malloc(sizeof(char) * strlen(token) + 1);
 		if (buff[i] == NULL)
 		{
-			free(input);
 			free(input_cpy);
 			free_buff(buff);
 			perror("Memory allocation error\n");
@@ -52,10 +49,8 @@ char **create_buff(char *input)
 		}
 		buff[i] = strdup(token);
 		token = strtok(NULL, delim);
-		free(token);
 	}
 	buff[i] = NULL;
-	free(input);
 	free(input_cpy);
 	return (buff);
 }

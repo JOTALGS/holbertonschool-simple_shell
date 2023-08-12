@@ -29,16 +29,15 @@ void free_buff(char **buff)
  int main(void)
  {
 	const char *prompt = "$ ";
-	ssize_t ch_read;
+	ssize_t ch_read = 0;
 	size_t in_size = 0;
 	pid_t pid = 0;
 	char *input = NULL;
-	char **buff, *cmnd, *path;
+	char **buff = NULL, *cmnd = NULL, *path = NULL;
 	int fd_isatty = 0;
 
-	/*while loop for the shell's prompt*/
 	path = _getenv();
-	while (1)
+	while (1)/*while loop for the shell*/
 	{
 		fd_isatty = isatty(STDIN_FILENO);
 		if (fd_isatty)
@@ -46,13 +45,22 @@ void free_buff(char **buff)
 
 		
 		ch_read = getline(&input, &in_size, stdin);
-		if (ch_read == -1 || strcmp(input, "exit\n") == 0)/*check if (getline) filed or reached EOF*/
+		if (ch_read == -1)/*check if (getline) filed or reached EOF*/
 		{
+			free(input);
+			free(path);
 			printf("\n");
 			return (-1);
 		}
+		else if(strcmp(input, "exit\n") == 0)
+		{
+			free(input);
+			free(path);
+			return (-1);
+		}
+
 		buff = create_buff(input);
-	
+
 		if (buff != NULL)
 		{
 			cmnd = strdup(buff[0]);
@@ -72,5 +80,6 @@ void free_buff(char **buff)
 		if (!fd_isatty)
 			break;
 	}
+	free(path);
 	return (0);
  }
