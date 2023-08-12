@@ -40,9 +40,10 @@ void free_buff(char **buff)
 	path = _getenv();
 	while (1)
 	{
-		printf("%s", prompt);
-
 		fd_isatty = isatty(STDIN_FILENO);
+		if (fd_isatty)
+			printf("%s", prompt);
+
 		
 		ch_read = getline(&input, &in_size, stdin);
 		if (ch_read == -1 || strcmp(input, "exit\n") == 0)/*check if (getline) filed or reached EOF*/
@@ -51,23 +52,25 @@ void free_buff(char **buff)
 			return (-1);
 		}
 		buff = create_buff(input);
-		cmnd = strdup(buff[0]);
-		if (status(buff) == 0)
-			child_process(pid, cmnd, buff);
-		else
+	
+		if (buff != NULL)
 		{
-			buff[0] = _which(buff, path);
-			if (buff[0] != NULL)
+			cmnd = strdup(buff[0]);
+			if (status(buff) == 0)
 				child_process(pid, cmnd, buff);
 			else
-				printf("%s: not found\n", cmnd);
+			{
+				buff[0] = _which(buff, path);
+				if (buff[0] != NULL)
+					child_process(pid, cmnd, buff);
+				else
+					printf("%s: not found\n", cmnd);
+			}
+			free(cmnd);
+			free_buff(buff);
 		}
-		free(cmnd);
-		if (fd_isatty)
-			continue;
-		else
+		if (!fd_isatty)
 			break;
 	}
-	free_buff(buff);
 	return (0);
  }

@@ -16,12 +16,14 @@ char *_getenv(void)
     token = strtok(env_cpy, delim);
     while (token != NULL)
     {
-		env_cpy = strdup(environ[i]);
         if (strcmp(token, path) == 0)
         {
             break;
         }
         i++;
+		if (environ[i] == NULL)
+			return (NULL);
+		env_cpy = strdup(environ[i]);
         token = strtok(env_cpy, delim);
     }
     token = strtok(NULL, delim);
@@ -40,6 +42,9 @@ char *_which(char **buff, char *path)
 	const char *delim = ":\n";
 	struct stat st;
 	char *path_cpy, *token = NULL, *test = NULL;
+
+	if (path == NULL)
+			return (NULL);
 
 	path_cpy = strdup(path);
 	token = strtok(path_cpy, delim);
@@ -64,18 +69,7 @@ char *_which(char **buff, char *path)
 		}
 		token = strtok(NULL, delim);
 	}
-	if (strcmp(buff[0], "\n") == 0)
-	{
-		buff[0] = malloc(sizeof(char) * strlen(test) + 1);
-		buff[0] = strdup(test);
-		free(test);
-		free(path_cpy);
-		return (buff[0]);
-	}
-	else
-	{
-		free(test);
-		free(path_cpy);
-		return (NULL);
-	}
+	free(test);
+	free(path_cpy);
+	return (NULL);	
 }
