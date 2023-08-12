@@ -9,8 +9,22 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
-void exec(char **argv);
+extern char **environ;
 
-int status(char *argv);
+void exec(char **buff);
+
+void frees(char *str1, char *str2, char *str3);
+
+void free_buff(char **buff);
+
+char *_getenv(void);
+
+char **create_buff(char *input);
+
+int child_process(pid_t pid, char *s1, char **bff);
+
+int status(char **buff);
+
+char *_which(char **buff, char *path);
 
 #endif

@@ -3,15 +3,19 @@
 /**
  * frees - frees the allocated memory.
  * @str1: String to free.
- * @str2: String to free.
  *
  * return: (void).
  */
 
-void frees(char *str1, char *str2)
+void free_buff(char **buff)
 {
-	free(str1);
-	free(str2);
+	int i = 0;
+
+	while (buff[i] != NULL)
+	{
+		free(buff[i++]);
+	}
+	free(buff);
 }
 
 /**
@@ -22,75 +26,51 @@ void frees(char *str1, char *str2)
  * Return: 0 (Success).
  */
 
- int main(int ac, char **argv)
+ int main(void)
  {
-	const char *prompt = "$ ", *delim = " \n";
+	const char *prompt = "$ ";
 	ssize_t ch_read;
 	size_t in_size = 0;
-	pid_t pid;
-	char *input = NULL, *input_cpy = NULL, *token = NULL;
-	int num_tok = 0, i = 0;
-	(void) ac;
+	pid_t pid = 0;
+	char *input = NULL;
+	char **buff, *cmnd, *path;
+	int fd_isatty = 0;
 
 	/*while loop for the shell's prompt*/
+	path = _getenv();
 	while (1)
 	{
-		printf("%s", prompt);
-
+		fd_isatty = isatty(STDIN_FILENO);
+		
+		if (fd_isatty)
+			printf("%s", prompt);
 		ch_read = getline(&input, &in_size, stdin);
-		if (ch_read == -1)/*check if (getline) filed or reached EOF*/
+		if (ch_read == -1 || strcmp(input, "exit\n") == 0)/*check if (getline) filed or reached EOF*/
 		{
 			printf("\n");
 			return (-1);
 		}
-		input_cpy = malloc(sizeof(char) * ch_read);/*allocate memory for a copy of @input*/
-		if (input_cpy == NULL)
+		buff = create_buff(input);
+		cmnd = strdup(buff[0]);
+		if (status(buff) == 0)
+			child_process(pid, cmnd, buff);
+		else
 		{
-			perror("Memory allocation error\n");
-			return (-1);
-		}
-		strcpy(input_cpy, input);/*copy @input to @input_cpy*/
-
-		/*calculates the total numbers of tokens*/
-		token = strtok(input, delim);
-		while (token != NULL)
-		{
-			num_tok++;
-			token = strtok(NULL, delim);
-		}
-		num_tok++;
-
-		argv = malloc(sizeof(char *) * num_tok);/*allocate memory to hold array of strings*/
-
-		/*store each token in each cell of the matrix*/
-		token = strtok(input_cpy, delim);
-		for (i = 0; token != NULL; i++)
-		{
-			argv[i] = malloc(sizeof(char) * strlen(token));/*allocate memory for each token*/
-			strcpy(argv[i], token);
-			token = strtok(NULL, delim);
-		}
-		argv[i] = NULL;
-
-		if (status(argv[0]) == 0)
-		{
-			pid = fork();
-			if (pid == -1)
+			buff[0] = _which(buff, path);
+			if (buff[0] != NULL)
 			{
-				frees(input, input_cpy);
-				perror("Fork failed\n");
-				return (-1);
-			}
-			else if (pid == 0)
-			{
-				exec(argv);
-				perror("Execve failed");
-				return (-1);
+				child_process(pid, cmnd, buff);
 			}
 			else
-				wait(NULL);
+				printf("%s: not found\n", cmnd);
 		}
+		free(cmnd);
+		if (!fd_isatty)
+		{
+			free_buff(buff);
+			break;
+		}
+		free_buff(buff);
 	}
-	frees(input, input_cpy);
 	return (0);
  }
