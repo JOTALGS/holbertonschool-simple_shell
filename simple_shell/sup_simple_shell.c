@@ -60,12 +60,12 @@ void free_buff(char **buff)
 		{
 			cmnd = strdup(buff[0]);
 			if (status(buff) == 0)
-				child_process(cmnd, buff, path);
+				child_process(buff, path);
 			else
 			{
 				buff[0] = _which(buff, path);
 				if (buff[0] != NULL)
-					child_process(cmnd, buff, path);
+					child_process(buff, path);
 				else
 					printf("%s: not found\n", cmnd);
 			}

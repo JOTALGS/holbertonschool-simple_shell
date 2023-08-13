@@ -11,7 +11,10 @@ int print_env(void)
     int i = 0;
 
     while (environ[i] != NULL)
+	{
         printf("%s\n", environ[i++]);
+	}
+	printf("\n -->> env <<--\n\n");
     return (0);
 }
 
@@ -24,11 +27,6 @@ int print_env(void)
 
 void exec(char **buff)
 {
-	char *path = NULL;
-
-	if (buff != NULL)
-		path = buff[0];
-
-	if (execve(path, buff, environ) == -1)
+	if (execve(buff[0], buff, environ) == -1)
 		perror("Error");
 }

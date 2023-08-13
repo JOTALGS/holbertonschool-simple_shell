@@ -65,7 +65,7 @@ char **create_buff(char *input, char *path)
  * Return: 0 (Success).
  */
 
-int child_process(char *str, char **buff, char *path)
+int child_process(char **buff, char *path)
 {
 	pid_t pid = getpid();
 
@@ -77,7 +77,6 @@ int child_process(char *str, char **buff, char *path)
 		if (pid == -1)
 		{
 			free(path);
-			free(str);
 			free_buff(buff);
 			perror("Fork failed\n");
 			return (-1);
@@ -86,7 +85,6 @@ int child_process(char *str, char **buff, char *path)
 		{
 			exec(buff);
 			free(path);
-			free(str);
 			free_buff(buff);
 			perror("Execve failed");
 			return (-1);
