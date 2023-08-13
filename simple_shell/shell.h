@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <signal.h>
 
 extern char **environ;
 
@@ -26,5 +27,7 @@ int child_process(char **bff, char *path);
 int status(char **buff);
 
 char *_which(char **buff, char *path);
+
+void print_env(void);
 
 #endif
