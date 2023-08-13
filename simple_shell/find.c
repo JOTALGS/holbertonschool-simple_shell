@@ -2,7 +2,7 @@
 
 /**
  * status - check if found a file.
- * @argv: token.
+ * @buff: buffer.
  *
  * Return: 0 if file found, -1 otherwise.
  */
@@ -18,9 +18,9 @@ int status(char **buff)
 }
 
 /**
- * _getenv - Get an enviroment variable. 
+ * _getenv - Get an PATH enviroment variable. 
  *
- * Return: String with the value of the requested environment variable.
+ * Return: String with the value of the PATH environment variable.
  */
 
 char *_getenv(void)
@@ -29,6 +29,7 @@ char *_getenv(void)
     char *token = NULL, *env_cpy = NULL, *fin_token = NULL;
     int i = 0;
 
+	/*search "PATH" in environ*/
 	env_cpy = strdup(environ[i]);
     token = strtok(env_cpy, delim);
     while (token != NULL)
@@ -43,6 +44,7 @@ char *_getenv(void)
 		env_cpy = strdup(environ[i]);
         token = strtok(env_cpy, delim);
     }
+	/*save the value of the PATH*/
     token = strtok(NULL, delim);
 	fin_token = strdup(token);
 	free(env_cpy);
@@ -50,10 +52,11 @@ char *_getenv(void)
 }
 
 /**
- * main - find a file in the PATH.
- * @buff: Files.
+ * _which - find a file in the PATH.
+ * @buff: path of executable to find.
+ * @path: value of PATH enviroment variable.
  *
- * Return: 0 (Success).
+ * Return: Path of executable (if found), NULL Otherwise.
  */
 
 char *_which(char **buff, char *path)
@@ -62,12 +65,13 @@ char *_which(char **buff, char *path)
 	struct stat st;
 	char *path_cpy, *token = NULL, *test = NULL;
 
+	/*if @path is NULL = PATH doesnt exist in the "environ"*/
 	if (path == NULL)
 			return (NULL);
 
+	/*creates a new string (path) in @buff[0] to find in the @path the command*/
 	path_cpy = strdup(path);
 	token = strtok(path_cpy, delim);
-
 	while (token != NULL)
 	{
 		test = malloc(sizeof(char) * (strlen(token) + strlen(buff[0]) + 2));
@@ -80,6 +84,7 @@ char *_which(char **buff, char *path)
 		strcpy(test, token);
 		strcat(test, "/");
 		strcat(test, buff[0]);
+		/*check if the path created exist*/
 		if (stat(test, &st) == 0)
 		{
 			buff[0] = malloc(sizeof(char) * strlen(test) + 1);

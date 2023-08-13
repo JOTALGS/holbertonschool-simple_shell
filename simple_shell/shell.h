@@ -21,7 +21,7 @@ char *_getenv(void);
 
 char **create_buff(char *input);
 
-int child_process(pid_t pid, char *s1, char **bff);
+int child_process(char *str, char **bff);
 
 int status(char **buff);
 

@@ -2,9 +2,9 @@
 
 /**
  * frees - frees the allocated memory.
- * @str1: String to free.
+ * @buff: buffer to be frees.
  *
- * return: (void).
+ * return: Nothing.
  */
 
 void free_buff(char **buff)
@@ -19,9 +19,7 @@ void free_buff(char **buff)
 }
 
 /**
- * main - super sipmple shell
- * @ac: counter.
- * @argv: pointer to array of arguments.
+ * main - Sipmple shell main.
  *
  * Return: 0 (Success).
  */
@@ -31,13 +29,12 @@ void free_buff(char **buff)
 	const char *prompt = "$ ";
 	ssize_t ch_read = 0;
 	size_t in_size = 0;
-	pid_t pid = 0;
 	char *input = NULL;
 	char **buff = NULL, *cmnd = NULL, *path = NULL;
 	int fd_isatty = 0;
 
 	path = _getenv();
-	while (1)/*while loop for the shell*/
+	while (1)/*infinite while loop for the shell*/
 	{
 		fd_isatty = isatty(STDIN_FILENO);
 		if (fd_isatty)
@@ -45,7 +42,8 @@ void free_buff(char **buff)
 
 		
 		ch_read = getline(&input, &in_size, stdin);
-		if (ch_read == -1)/*check if (getline) filed or reached EOF*/
+		/*check if (getline) filed, reached EOF or exit*/
+		if (ch_read == -1)
 		{
 			free(input);
 			free(path);
@@ -65,12 +63,12 @@ void free_buff(char **buff)
 		{
 			cmnd = strdup(buff[0]);
 			if (status(buff) == 0)
-				child_process(pid, cmnd, buff);
+				child_process(cmnd, buff);
 			else
 			{
 				buff[0] = _which(buff, path);
 				if (buff[0] != NULL)
-					child_process(pid, cmnd, buff);
+					child_process(cmnd, buff);
 				else
 					printf("%s: not found\n", cmnd);
 			}

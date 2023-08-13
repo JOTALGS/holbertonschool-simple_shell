@@ -1,20 +1,21 @@
 #include "shell.h"
 
 /**
+ * create_buff - Creates a buffer from the @input;
+ * @input: Input of the user.
  *
- *
- *
+ * Return: The buffer, NULL if the user inputs only (spaces, new line or tabs).
  */
 
 char **create_buff(char *input)
 {
-	const char *delim = " \"\n";
+	const char *delim = " \"\t\n";
 	char *input_cpy = NULL, *token = NULL, **buff = NULL;
 	int num_tok = 0, i = 0;
 
 	
 	input_cpy = strdup(input);
-	/*calculates the total numbers of tokens*/
+	/*calculates the numbers of tokens*/
 	token = strtok(input, delim);
 	while (token != NULL)
 	{
@@ -33,9 +34,8 @@ char **create_buff(char *input)
 		perror("Memory allocation error\n");
 		exit(-1);
 	}
-	/*store each token in each cell of the matrix*/
+	/*store each token in each cell of the buffer*/
 	token = strtok(input_cpy, delim);
-	
 	for (i = 0; token != NULL; i++)
 	{
 		/*allocate memory for each token*/
@@ -55,19 +55,25 @@ char **create_buff(char *input)
 	return (buff);
 }
 /**
- *
- *
- *
+ * child_process - creates a child process on success.
+ * @str: string to be released in case of error.
+ * @buff: path of the executable to run.
+ * 
+ * Return: 0 (Success).
  */
 
-int child_process(pid_t pid, char *s1, char **buff)
+int child_process(char *str, char **buff)
 {
+	pid_t pid = getpid();
+
+	/*check if the path (buff) created exist*/
 	if (status(buff) == 0)
 	{
+		/*create a child process to execute the path (buff)*/
 		pid = fork();
 		if (pid == -1)
 		{
-			free(s1);
+			free(str);
 			free_buff(buff);
 			perror("Fork failed\n");
 			return (-1);
