@@ -86,7 +86,7 @@ int child_process(char **buff, char *path)
 			if (strcmp(buff[0], "/usr/bin/env") == 0)
 			{
 				print_env();
-				kill(getpid(), SIGKILL);
+				kill(getpid(), SIGTERM);
 			}
 			else
 			{

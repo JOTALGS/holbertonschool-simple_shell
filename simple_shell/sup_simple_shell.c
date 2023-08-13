@@ -21,6 +21,22 @@ void free_buff(char **buff)
 }
 
 /**
+ * exit_process - kill the process.
+ * @input: user input.
+ * @path: path.
+ * 
+ * Return: Nothing.
+*/
+
+int exit_process(char *input, char *path)
+{
+	free(input);
+	free(path);
+	kill(getpid(), SIGTERM);
+	return (0);
+}
+
+/**
  * main - Sipmple shell main.
  *
  * Return: 0 (Success).
@@ -50,11 +66,7 @@ void free_buff(char **buff)
 			return (-1);
 		}
 		else if(strcmp(input, "exit\n") == 0)
-		{
-			free(input);
-			free(path);
-			return (-1);
-		}
+			return (exit_process(input, path));
 		buff = create_buff(input, path);
 		if (buff != NULL)
 		{
