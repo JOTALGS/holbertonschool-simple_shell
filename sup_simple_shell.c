@@ -28,12 +28,11 @@ void free_buff(char **buff)
  * Return: Nothing.
 */
 
-int exit_process(char *input, char *path)
+void exit_program(char *input, char *path)
 {
 	free(input);
 	free(path);
-	kill(getpid(), SIGTERM);
-	return (0);
+	exit(0);
 }
 
 /**
@@ -49,16 +48,14 @@ char *_getline(char *path)
 	char *input = NULL;
 
 	ch_read = getline(&input, &in_size, stdin);
-		/*check if (getline) filed, reached EOF or exit*/
-		if (ch_read == -1)
-		{
-			free(input);
-			free(path);
-			printf("\n");
-			exit(-1);
-		}
-		else if(strcmp(input, "exit\n") == 0)
-			exit(exit_process(input, path));
+	/*check if (getline) filed, reached EOF or exit*/
+	if (ch_read == -1)
+	{
+		printf("\n");
+		exit_program(input, path);
+	}
+	else if(strcmp(input, "exit\n") == 0)
+		exit_program(input, path);
 	return (input);
 }
 
@@ -71,8 +68,6 @@ char *_getline(char *path)
  int main(void)
  {
 	const char *prompt = "$ ";
-	/*ssize_t ch_read = 0;
-	size_t in_size = 0;*/
 	char *input = NULL, **buff = NULL, *cmnd = NULL, *path = NULL;
 	int fd_isatty = 0;
 
@@ -95,7 +90,7 @@ char *_getline(char *path)
 				if (buff[0] != NULL)
 					child_process(buff, path);
 				else
-					printf("%s: not found\n", cmnd);
+					printf("hsh: 1: %s: not found\n", cmnd);
 			}
 			free(cmnd);
 			free_buff(buff);
