@@ -3,17 +3,17 @@
 /**
  * create_buff - Creates a buffer from the @input;
  * @input: Input of the user.
+ * @path: the path.
  *
- * Return: The buffer, NULL if the user inputs only (spaces, new line or tabs).
+ * Return: Buffer, NULL if the user inputs only (spaces, new line or tabs).
  */
 
-char **create_buff(char *input)
+char **create_buff(char *input, char *path)
 {
 	const char *delim = " \"\t\n";
 	char *input_cpy = NULL, *token = NULL, **buff = NULL;
 	int num_tok = 0, i = 0;
 
-	
 	input_cpy = strdup(input);
 	/*calculates the numbers of tokens*/
 	token = strtok(input, delim);
@@ -31,6 +31,7 @@ char **create_buff(char *input)
 	if (buff == NULL)
 	{
 		free(input_cpy);
+		free(path);
 		perror("Memory allocation error\n");
 		exit(-1);
 	}
@@ -42,12 +43,13 @@ char **create_buff(char *input)
 		buff[i] = malloc(sizeof(char) * strlen(token) + 1);
 		if (buff[i] == NULL)
 		{
+			free(path);
 			free(input_cpy);
 			free_buff(buff);
 			perror("Memory allocation error\n");
 			exit (-1);
 		}
-		buff[i] = strdup(token);
+		strcpy(buff[i], token);
 		token = strtok(NULL, delim);
 	}
 	buff[i] = NULL;
@@ -58,11 +60,12 @@ char **create_buff(char *input)
  * child_process - creates a child process on success.
  * @str: string to be released in case of error.
  * @buff: path of the executable to run.
+ * @path: the path:
  * 
  * Return: 0 (Success).
  */
 
-int child_process(char *str, char **buff)
+int child_process(char *str, char **buff, char *path)
 {
 	pid_t pid = getpid();
 
@@ -73,6 +76,7 @@ int child_process(char *str, char **buff)
 		pid = fork();
 		if (pid == -1)
 		{
+			free(path);
 			free(str);
 			free_buff(buff);
 			perror("Fork failed\n");
@@ -81,6 +85,9 @@ int child_process(char *str, char **buff)
 		else if (pid == 0)
 		{
 			exec(buff);
+			free(path);
+			free(str);
+			free_buff(buff);
 			perror("Execve failed");
 			return (-1);
 		}

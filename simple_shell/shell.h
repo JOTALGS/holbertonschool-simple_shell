@@ -19,9 +19,9 @@ void free_buff(char **buff);
 
 char *_getenv(void);
 
-char **create_buff(char *input);
+char **create_buff(char *input, char *path);
 
-int child_process(char *str, char **bff);
+int child_process(char *str, char **bff, char *path);
 
 int status(char **buff);
 

@@ -40,7 +40,11 @@ char *_getenv(void)
         }
         i++;
 		if (environ[i] == NULL)
+		{
+			free(env_cpy);
 			return (NULL);
+		}
+		free(env_cpy);
 		env_cpy = strdup(environ[i]);
         token = strtok(env_cpy, delim);
     }
@@ -78,6 +82,8 @@ char *_which(char **buff, char *path)
 		if (test == NULL)
 		{
 			free(path);
+			free(path_cpy);
+			free(buff);
 			perror("Allocate memory error\n");
 			exit(-1);
 		}
@@ -88,7 +94,14 @@ char *_which(char **buff, char *path)
 		if (stat(test, &st) == 0)
 		{
 			buff[0] = malloc(sizeof(char) * strlen(test) + 1);
-			buff[0] = strdup(test);
+			if (buff[0] == NULL)
+			{
+				free(path_cpy);
+				free(test);
+				free(buff);
+				exit(-1);
+			}
+			strcpy(buff[0], test);
 			free(path_cpy);
 			free(test);
 			return (buff[0]);
