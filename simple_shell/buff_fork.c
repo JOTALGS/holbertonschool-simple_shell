@@ -61,7 +61,7 @@ char **create_buff(char *input, char *path)
  * @str: string to be released in case of error.
  * @buff: path of the executable to run.
  * @path: the path:
- * 
+ *
  * Return: 0 (Success).
  */
 

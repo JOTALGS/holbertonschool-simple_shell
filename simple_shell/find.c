@@ -93,6 +93,7 @@ char *_which(char **buff, char *path)
 		/*check if the path created exist*/
 		if (stat(test, &st) == 0)
 		{
+			free(buff[0]);
 			buff[0] = malloc(sizeof(char) * strlen(test) + 1);
 			if (buff[0] == NULL)
 			{
