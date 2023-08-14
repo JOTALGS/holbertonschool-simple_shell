@@ -18,27 +18,27 @@ int status(char **buff)
 }
 
 /**
- * _getenv - Get an PATH enviroment variable. 
+ * _getenv - Get an PATH enviroment variable.
  *
  * Return: String with the value of the PATH environment variable.
  */
 
 char *_getenv(void)
 {
-    const char *path = "PATH", *delim = "=\n";
-    char *token = NULL, *env_cpy = NULL, *fin_token = NULL;
-    int i = 0;
+	const char *path = "PATH", *delim = "=\n";
+	char *token = NULL, *env_cpy = NULL, *fin_token = NULL;
+	int i = 0;
 
 	/*search "PATH" in environ*/
 	env_cpy = strdup(environ[i]);
-    token = strtok(env_cpy, delim);
-    while (token != NULL)
-    {
-        if (strcmp(token, path) == 0)
-        {
-            break;
-        }
-        i++;
+	token = strtok(env_cpy, delim);
+	while (token != NULL)
+	{
+		if (strcmp(token, path) == 0)
+		{
+			break;
+		}
+		i++;
 		if (environ[i] == NULL)
 		{
 			free(env_cpy);
@@ -46,13 +46,39 @@ char *_getenv(void)
 		}
 		free(env_cpy);
 		env_cpy = strdup(environ[i]);
-        token = strtok(env_cpy, delim);
-    }
+		token = strtok(env_cpy, delim);
+	}
 	/*save the value of the PATH*/
-    token = strtok(NULL, delim);
+	token = strtok(NULL, delim);
 	fin_token = strdup(token);
 	free(env_cpy);
-    return (fin_token);
+	return (fin_token);
+}
+
+/**
+ * allocate_mem - allocate memory for check string.
+ * @buff: user input.
+ * @path: path.
+ * @path_cpy: cpoy of the path.
+ * 
+ * Return: String to check.
+*/
+
+char *allocate_mem(char **buff, char *token, char *path, char *path_cpy)
+{
+	char *test = NULL;
+
+	test = malloc(sizeof(char) * (strlen(token) + strlen(buff[0]) + 2));
+	if (test == NULL)
+	{
+		free(path);
+		free(path_cpy);
+		free(buff);
+		perror("Allocate memory error\n");
+		exit(-1);
+	}
+	strcpy(test, token);
+	return (test);
 }
 
 /**
@@ -78,16 +104,7 @@ char *_which(char **buff, char *path)
 	token = strtok(path_cpy, delim);
 	while (token != NULL)
 	{
-		test = malloc(sizeof(char) * (strlen(token) + strlen(buff[0]) + 2));
-		if (test == NULL)
-		{
-			free(path);
-			free(path_cpy);
-			free(buff);
-			perror("Allocate memory error\n");
-			exit(-1);
-		}
-		strcpy(test, token);
+		test = allocate_mem(buff, token, path, path_cpy);
 		strcat(test, "/");
 		strcat(test, buff[0]);
 		/*check if the path created exist*/

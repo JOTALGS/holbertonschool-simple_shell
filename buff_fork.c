@@ -1,6 +1,30 @@
 #include "shell.h"
 
 /**
+ * count_token - count the number of tokens.
+ * @:
+ * @:
+ * 
+ * Return: Nuber of token.
+ */
+
+int count_token(char *input)
+{
+	const char *delim = " \"\t\n";
+	char *token = NULL;
+	int count = 0;
+
+	token = strtok(input, delim);
+	while (token != NULL)
+	{
+		count++;
+		token = strtok(NULL, delim);
+	}
+	count++;
+	return (count);
+}
+
+/**
  * create_buff - Creates a buffer from the @input;
  * @input: Input of the user.
  * @path: the path.
@@ -15,16 +39,7 @@ char **create_buff(char *input, char *path)
 	int num_tok = 0, i = 0;
 
 	input_cpy = strdup(input);
-	/*calculates the numbers of tokens*/
-	token = strtok(input, delim);
-	while (token != NULL)
-	{
-		num_tok++;
-		token = strtok(NULL, delim);
-	}
-	num_tok++;
-
-	if (num_tok == 1)
+	if ((num_tok = count_token(input)) == 1)
 		return (NULL);
 	/*allocate memory to hold array of strings*/
 	buff = malloc(sizeof(char *) * num_tok);
