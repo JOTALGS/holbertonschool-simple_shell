@@ -24,7 +24,7 @@ void free_buff(char **buff)
  * exit_process - kill the process.
  * @input: user input.
  * @path: path.
- * 
+ *
  * Return: Nothing.
 */
 
@@ -37,7 +37,7 @@ void exit_program(char *input, char *path)
 
 /**
  * _getline - getline function.
- * 
+ *
  * Return: input.
 */
 
@@ -65,8 +65,8 @@ char *_getline(char *path)
  * Return: 0 (Success).
  */
 
- int main(void)
- {
+int main(void)
+{
 	const char *prompt = "$ ";
 	char *input = NULL, **buff = NULL, *cmnd = NULL, *path = NULL;
 	int fd_isatty = 0;
@@ -101,4 +101,4 @@ char *_getline(char *path)
 	}
 	free(path);
 	return (0);
- }
+}
