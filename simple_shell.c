@@ -26,7 +26,7 @@ void free_buff(char **buff)
  * @path: path.
  *
  * Return: Nothing.
-*/
+ */
 
 void exit_program(char *input, char *path)
 {
@@ -37,9 +37,10 @@ void exit_program(char *input, char *path)
 
 /**
  * _getline - getline function.
+ * @path: the path.
  *
  * Return: input.
-*/
+ */
 
 char *_getline(char *path)
 {
@@ -54,7 +55,7 @@ char *_getline(char *path)
 		printf("\n");
 		exit_program(input, path);
 	}
-	else if(strcmp(input, "exit\n") == 0)
+	else if (strcmp(input, "exit\n") == 0)
 		exit_program(input, path);
 	return (input);
 }
@@ -76,7 +77,7 @@ int main(void)
 	{
 		fd_isatty = isatty(STDIN_FILENO);
 		if (fd_isatty)
-			printf("%s", prompt);
+				printf("%s", prompt);
 		input = _getline(path);
 		buff = create_buff(input, path);
 		if (buff != NULL)
@@ -96,9 +97,10 @@ int main(void)
 			free_buff(buff);
 		}
 		if (!fd_isatty)
-			break;
+				break;
 		free(input);
 	}
 	free(path);
 	return (0);
+
 }

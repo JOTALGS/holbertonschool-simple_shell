@@ -27,4 +27,5 @@ void exec(char **buff)
 {
 	if (execve(buff[0], buff, environ) == -1)
 		perror("Error");
+
 }
