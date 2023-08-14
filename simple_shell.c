@@ -66,7 +66,7 @@ char *_getline(char *path)
  * Return: 0 (Success).
  */
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	const char *prompt = "$ ";
 	char *input = NULL, **buff = NULL, *cmnd = NULL, *path = NULL;
@@ -91,7 +91,7 @@ int main(void)
 				if (buff[0] != NULL)
 					child_process(buff, path);
 				else
-					printf("hsh: 1: %s: not found\n", cmnd);
+					printf("%s: %d: %s: not found\n", argv[0], argc, cmnd);
 			}
 			free(cmnd);
 			free_buff(buff);
@@ -101,5 +101,5 @@ int main(void)
 		free(input);
 	}
 	free(path);
-	return (0);
+	exit(0);
 }
