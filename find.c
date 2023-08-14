@@ -9,12 +9,12 @@
 
 int status(char **buff)
 {
-		struct stat st;
+	struct stat st;
 
-		if (stat(buff[0], &st) == 0)
-				return (0);
-		else
-				return (-1);
+	if (stat(buff[0], &st) == 0)
+		return (0);
+	else
+		return (-1);
 }
 
 /**
@@ -25,34 +25,34 @@ int status(char **buff)
 
 char *_getenv(void)
 {
-		const char *path = "PATH", *delim = "=\n";
-		char *token = NULL, *env_cpy = NULL, *fin_token = NULL;
-		int i = 0;
+	const char *path = "PATH", *delim = "=\n";
+	char *token = NULL, *env_cpy = NULL, *fin_token = NULL;
+	int i = 0;
 
-		/*search "PATH" in environ*/
+	/*search "PATH" in environ*/
+	env_cpy = strdup(environ[i]);
+	token = strtok(env_cpy, delim);
+	while (token != NULL)
+	{
+		if (strcmp(token, path) == 0)
+		{
+			break;
+		}
+		i++;
+		if (environ[i] == NULL)
+		{
+			free(env_cpy);
+			return (NULL);
+		}
+		free(env_cpy);
 		env_cpy = strdup(environ[i]);
 		token = strtok(env_cpy, delim);
-		while (token != NULL)
-		{
-				if (strcmp(token, path) == 0)
-				{
-						break;
-				}
-				i++;
-				if (environ[i] == NULL)
-				{
-						free(env_cpy);
-						return (NULL);
-				}
-				free(env_cpy);
-				env_cpy = strdup(environ[i]);
-				token = strtok(env_cpy, delim);
-		}
-		/*save the value of the PATH*/
-		token = strtok(NULL, delim);
-		fin_token = strdup(token);
-		free(env_cpy);
-		return (fin_token);
+	}
+	/*save the value of the PATH*/
+	token = strtok(NULL, delim);
+	fin_token = strdup(token);
+	free(env_cpy);
+	return (fin_token);
 }
 
 /**
@@ -67,19 +67,19 @@ char *_getenv(void)
 
 char *allocate_mem(char **buff, char *token, char *path, char *path_cpy)
 {
-		char *test = NULL;
+	char *test = NULL;
 
-		test = malloc(sizeof(char) * (strlen(token) + strlen(buff[0]) + 2));
-		if (test == NULL)
-		{
-				free(path);
-				free(path_cpy);
-				free(buff);
-				perror("Allocate memory error\n");
-				exit(-1);
-		}
-		strcpy(test, token);
-		return (test);
+	test = malloc(sizeof(char) * (strlen(token) + strlen(buff[0]) + 2));
+	if (test == NULL)
+	{
+		free(path);
+		free(path_cpy);
+		free(buff);
+		perror("Allocate memory error\n");
+		exit(-1);
+	}
+	strcpy(test, token);
+	return (test);
 }
 
 /**
@@ -92,42 +92,42 @@ char *allocate_mem(char **buff, char *token, char *path, char *path_cpy)
 
 char *_which(char **buff, char *path)
 {
-		const char *delim = ":\n";
-		struct stat st;
-		char *path_cpy, *token = NULL, *test = NULL;
+	const char *delim = ":\n";
+	struct stat st;
+	char *path_cpy, *token = NULL, *test = NULL;
 
-		/*if @path is NULL = PATH doesnt exist in the "environ"*/
-		if (path == NULL)
-				return (NULL);
-
-		/*creates a new string (path) in @buff[0] to find in the @path the command*/
-		path_cpy = strdup(path);
-		token = strtok(path_cpy, delim);
-		while (token != NULL)
-		{
-				test = allocate_mem(buff, token, path, path_cpy);
-				strcat(test, "/");
-				strcat(test, buff[0]);
-				/*check if the path created exist*/
-				if (stat(test, &st) == 0)
-				{
-						free(buff[0]);
-						buff[0] = malloc(sizeof(char) * strlen(test) + 1);
-						if (buff[0] == NULL)
-						{
-								free(path_cpy);
-								free(test);
-								free(buff);
-								exit(-1);
-						}
-						strcpy(buff[0], test);
-						free(path_cpy);
-						free(test);
-						return (buff[0]);
-				}
-				free(test);
-				token = strtok(NULL, delim);
-		}
-		free(path_cpy);
+	/*if @path is NULL = PATH doesnt exist in the "environ"*/
+	if (path == NULL)
 		return (NULL);
+
+	/*creates a new string (path) in @buff[0] to find in the @path the command*/
+	path_cpy = strdup(path);
+	token = strtok(path_cpy, delim);
+	while (token != NULL)
+	{
+		test = allocate_mem(buff, token, path, path_cpy);
+		strcat(test, "/");
+		strcat(test, buff[0]);
+		/*check if the path created exist*/
+		if (stat(test, &st) == 0)
+		{
+			free(buff[0]);
+			buff[0] = malloc(sizeof(char) * strlen(test) + 1);
+			if (buff[0] == NULL)
+			{
+				free(path_cpy);
+				free(test);
+				free(buff);
+				exit(-1);
+			}
+			strcpy(buff[0], test);
+			free(path_cpy);
+			free(test);
+			return (buff[0]);
+		}
+		free(test);
+		token = strtok(NULL, delim);
+	}
+	free(path_cpy);
+	return (NULL);
 }

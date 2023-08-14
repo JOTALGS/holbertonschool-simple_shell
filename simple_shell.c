@@ -77,7 +77,7 @@ int main(void)
 	{
 		fd_isatty = isatty(STDIN_FILENO);
 		if (fd_isatty)
-				printf("%s", prompt);
+			printf("%s", prompt);
 		input = _getline(path);
 		buff = create_buff(input, path);
 		if (buff != NULL)
@@ -97,10 +97,9 @@ int main(void)
 			free_buff(buff);
 		}
 		if (!fd_isatty)
-				break;
+			break;
 		free(input);
 	}
 	free(path);
 	return (0);
-
 }
