@@ -38,8 +38,7 @@ char **create_buff(char *input, char *path)
 	int num_tok = 0, i = 0;
 
 	input_cpy = strdup(input);
-	num_tok = count_token(input);
-	if (num_tok == 1)
+	if ((num_tok = count_token(input)) == 1)
 		return (NULL);
 	/*allocate memory to hold array of strings*/
 	buff = malloc(sizeof(char *) * num_tok);
@@ -62,7 +61,7 @@ char **create_buff(char *input, char *path)
 			free(input_cpy);
 			free_buff(buff);
 			perror("Memory allocation error\n");
-			exit(-1);
+			exit (-1);
 		}
 		strcpy(buff[i], token);
 		token = strtok(NULL, delim);
@@ -73,6 +72,7 @@ char **create_buff(char *input, char *path)
 }
 /**
  * child_process - creates a child process on success.
+ * @str: string to be released in case of error.
  * @buff: path of the executable to run.
  * @path: the path:
  *
@@ -115,4 +115,5 @@ int child_process(char **buff, char *path)
 			wait(NULL);
 	}
 	return (0);
+
 }
