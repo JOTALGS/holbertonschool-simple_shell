@@ -3,7 +3,7 @@
 /**
  * count_token - count the number of tokens.
  * @input: user path.
- * 
+ *
  * Return: Number of token.
  */
 

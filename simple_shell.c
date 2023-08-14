@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * frees - frees the allocated memory.
+ * free_buff - frees the allocated memory.
  * @buff: buffer to be frees.
  *
  * return: Nothing.
@@ -21,7 +21,7 @@ void free_buff(char **buff)
 }
 
 /**
- * exit_process - kill the process.
+ * exit_program - kill the process.
  * @input: user input.
  * @path: path.
  *
