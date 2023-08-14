@@ -2,10 +2,9 @@
 
 /**
  * count_token - count the number of tokens.
- * @:
- * @:
+ * @input: user path.
  * 
- * Return: Nuber of token.
+ * Return: Number of token.
  */
 
 int count_token(char *input)
