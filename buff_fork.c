@@ -40,7 +40,10 @@ char **create_buff(char *input, char *path)
 	input_cpy = strdup(input);
 	num_tok = count_token(input);
 	if (num_tok == 1)
+	{
+		free(input_cpy);
 		return (NULL);
+	}
 	/*allocate memory to hold array of strings*/
 	buff = malloc(sizeof(char *) * num_tok);
 	if (buff == NULL)

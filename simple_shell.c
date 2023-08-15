@@ -42,17 +42,18 @@ void exit_program(char *input, char *path)
  * Return: input.
  */
 
-char *_getline(char *path)
+char *_getline(char *path, int fd_isatty)
 {
-	ssize_t ch_read;
-	size_t in_size;
+	ssize_t ch_read = 0;
+	size_t in_size = 0;
 	char *input = NULL;
 
 	ch_read = getline(&input, &in_size, stdin);
 	/*check if (getline) filed, reached EOF or exit*/
 	if (ch_read == -1)
 	{
-		printf("\n");
+		if (fd_isatty)
+			printf("\n");
 		exit_program(input, path);
 	}
 	else if (strcmp(input, "exit\n") == 0)
@@ -78,7 +79,7 @@ int main(int argc, char *argv[])
 		fd_isatty = isatty(STDIN_FILENO);
 		if (fd_isatty)
 			printf("%s", prompt);
-		input = _getline(path);
+		input = _getline(path, fd_isatty);
 		buff = create_buff(input, path);
 		if (buff != NULL)
 		{
@@ -96,8 +97,6 @@ int main(int argc, char *argv[])
 			free(cmnd);
 			free_buff(buff);
 		}
-		if (!fd_isatty)
-			break;
 		free(input);
 	}
 	free(path);
