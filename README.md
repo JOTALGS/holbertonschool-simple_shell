@@ -42,5 +42,5 @@ To exit the program, the user can enter the exit command at the prompt, or press
 
 ## Authors
 
-* **Franco Musso* - *Holberton Student* - [Franco Musso](https://github.com/FrancoMuVa)
+* **Franco Musso** - *Holberton Student* - [Franco Musso](https://github.com/FrancoMuVa)
 * **Jose Gil** - *Holberton Student* - [Jose Gil](https://github.com/JOTALGS)
