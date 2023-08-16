@@ -27,10 +27,11 @@ void free_buff(char **buff)
  * Return: Nothing.
  */
 
-void exit_program(char *input, char *path)
+void exit_program(char **buff, char *input, char *path)
 {
 	free(input);
 	free(path);
+	free_buff(buff);
 	exit(0);
 }
 
@@ -53,10 +54,10 @@ char *_getline(char *path, int fd_isatty)
 	{
 		if (fd_isatty)
 			printf("\n");
-		exit_program(input, path);
+		free(input);
+		free(path);
+		exit(0);
 	}
-	else if (strcmp(input, "exit\n") == 0)
-		exit_program(input, path);
 	return (input);
 }
 
@@ -82,6 +83,12 @@ int main(int argc, char *argv[])
 		buff = create_buff(input, path);
 		if (buff != NULL)
 		{
+			if (strcmp(buff[0], "exit") == 0)
+				exit_program(buff, input, path);
+
+			else if (strcmp(buff[0], "env") == 0)
+				print_env();
+
 			cmnd = strdup(buff[0]);
 			if (status(buff) == 0)
 				child_process(buff, path);

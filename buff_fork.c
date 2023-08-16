@@ -100,18 +100,10 @@ int child_process(char **buff, char *path)
 		}
 		else if (pid == 0)
 		{
-			if (strcmp(buff[0], "/usr/bin/env") == 0)
-			{
-				print_env();
-				kill(getpid(), SIGTERM);
-			}
-			else
-			{
-				exec(buff);
-				free(path);
-				free_buff(buff);
-				perror("Execve failed");
-			}
+			exec(buff);
+			free(path);
+			free_buff(buff);
+			perror("Execve failed");
 			return (-1);
 		}
 		else
