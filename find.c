@@ -129,5 +129,6 @@ char *_which(char **buff, char *path)
 		token = strtok(NULL, delim);
 	}
 	free(path_cpy);
+	free(buff[0]);
 	return (NULL);
 }

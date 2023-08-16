@@ -13,8 +13,7 @@ void free_buff(char **buff)
 
 	while (buff[i] != NULL)
 	{
-		free(buff[i]);
-		i++;
+		free(buff[i++]);
 	}
 	free(buff[i]);
 	free(buff);
