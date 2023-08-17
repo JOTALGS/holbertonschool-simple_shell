@@ -31,7 +31,7 @@ Here is a quick demonstration of _printf in action:
 
 
 ## Prerequisites
-Compiled on Ubuntu 20.04 LTS* Compile code with: "gcc -Wall -Werror -Wextra-pedantic -std=gnu89 *.c -o hsh"
+Compiled on Ubuntu 20.04 LTS*
 
 * Include the "shell.h" header file in main program. Display a prompt and wait for the user to type a command. A command line always ends with a new line.
 * If an executable cannot be found, print an error message and display the prompt again.
@@ -56,9 +56,6 @@ Compiled on Ubuntu 20.04 LTS* Compile code with: "gcc -Wall -Werror -Wextra-peda
 - All the files will be compiled on Ubuntu 20.04 LTS
 - No more than 5 functions per file
 
-### Compilation
-
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 
 ### Usage
 
