@@ -7,22 +7,28 @@ It uses the getpatharray function to retrieve the directories specified by the P
 Here is a quick demonstration of _printf in action:
 
 ```
+ ./hsh
  $ls
+ bin  boot  dev  etc  hello_world  home  lib  lib32  lib64  libx32  media  mnt  opt  preprocessor  proc  root  run  sbin  srv  sys  tmp  usr  var  welcome  y
+ $
 ```
 
-* bin  boot  dev  etc  hello_world  home  lib  lib32  lib64  libx32  media  mnt  opt  preprocessor  proc  root  run  sbin  srv  sys  tmp  usr  var  welcome  y
 
 ```
+ ./hsh
  $pwd
+ root@bd5438578880:~/holbertonschool-simple_shell#
+ $
 ```
 
-* root@bd5438578880:~/holbertonschool-simple_shell#
 
 ```
+ ./hsh
  $/bin/ls
+ bin  boot  dev  etc  hello_world  home  lib  lib32  lib64  libx32  media  mnt  opt  preprocessor  proc  root  run  sbin  srv  sys  tmp  usr  var  welcome  y
+ $
 ```
 
-* bin  boot  dev  etc  hello_world  home  lib  lib32  lib64  libx32  media  mnt  opt  preprocessor  proc  root  run  sbin  srv  sys  tmp  usr  var  welcome  y
 
 ## Prerequisites
 Compiled on Ubuntu 20.04 LTS* Compile code with: "gcc -Wall -Werror -Wextra-pedantic -std=gnu89 *.c -o hsh"
