@@ -88,19 +88,21 @@ int main(int argc, char *argv[])
 
 			else if (strcmp(buff[0], "env") == 0)
 				print_env();
-
-			cmnd = strdup(buff[0]);
-			if (status(buff) == 0)
-				child_process(buff, path);
-			else
+			else 
 			{
-				buff[0] = _which(buff, path);
-				if (buff[0] != NULL)
+				cmnd = strdup(buff[0]);
+				if (status(buff) == 0)
 					child_process(buff, path);
 				else
-					printf("%s: %d: %s: not found\n", argv[0], argc, cmnd);
+				{
+					buff[0] = _which(buff, path);
+					if (buff[0] != NULL)
+						child_process(buff, path);
+					else
+						dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", argv[0], argc, cmnd);
+				}
+				free(cmnd);
 			}
-			free(cmnd);
 			free_buff(buff);
 		}
 		free(input);

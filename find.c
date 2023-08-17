@@ -50,9 +50,14 @@ char *_getenv(void)
 	}
 	/*save the value of the PATH*/
 	token = strtok(NULL, delim);
-	fin_token = strdup(token);
-	free(env_cpy);
-	return (fin_token);
+	if (strcmp(token, "") == 0)
+		return (NULL);
+	else
+	{
+		fin_token = strdup(token);
+		free(env_cpy);
+		return (fin_token);
+	}
 }
 
 /**
