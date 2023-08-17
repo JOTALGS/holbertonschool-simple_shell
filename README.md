@@ -8,7 +8,7 @@ Here is a quick demonstration of _printf in action:
 
 ```
  ./hsh
- $ls
+ $ ls
  bin  boot  dev  etc  hello_world  home  lib  lib32  lib64  libx32  media  mnt  opt  preprocessor  proc  root  run  sbin  srv  sys  tmp  usr  var  welcome  y
  $
 ```
@@ -16,7 +16,7 @@ Here is a quick demonstration of _printf in action:
 
 ```
  ./hsh
- $pwd
+ $ pwd
  root@bd5438578880:~/holbertonschool-simple_shell#
  $
 ```
@@ -24,13 +24,13 @@ Here is a quick demonstration of _printf in action:
 
 ```
  ./hsh
- $/bin/ls
+ $ /bin/ls
  bin  boot  dev  etc  hello_world  home  lib  lib32  lib64  libx32  media  mnt  opt  preprocessor  proc  root  run  sbin  srv  sys  tmp  usr  var  welcome  y
  $
 ```
  ```
  ./hsh
- $env
+ $ env
  HOSTNAME=bd5438578880
  LANGUAGE=en_US:en
  PWD=/root/holbertonschool-simple_shell
