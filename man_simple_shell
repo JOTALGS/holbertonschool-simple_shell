@@ -1,0 +1,41 @@
+.SH NAME
+	Simple_shell
+
+.SH SYNOPSIS
+
+	#include "shell.h"
+
+.SH DESCRIPTION
+
+	This program is a simple implementation of a shell that can accept user input,
+	parse the input into separate commands and arguments, and execute the specified command
+	from standard input or a specified file.
+
+.SH OPERATION
+
+.B Displays a prompt and waits for the user to type a command, the command line will terminate with a new line.
+
+.B The prompt is displayed each time a command is executed.
+
+.B If a command cannot be found, prints an error message and displays the prompt.
+
+.B If the user calls the non-interactive mode, the shell must execute those commands.
+
+.B Handle the "end of file" condition (Ctrl+D).
+
+
+.SH EXAMPLES
+
+	commands with and without flags - Example: "ls -l" "pwd"
+
+	commands with path - Example: "/bin/ls -l" "/bin/pwd"
+
+.SH SEE ALSO
+
+       Bash Reference ManuaL
+       The Gnu Readline Library
+
+.SH AUTHORS
+Franco Musso and Jose Gil.
+
+
