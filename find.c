@@ -50,7 +50,7 @@ char *_getenv(void)
 	}
 	/*save the value of the PATH*/
 	token = strtok(NULL, delim);
-	if (strcmp(token, "") == 0)
+	if (token == NULL)
 		return (NULL);
 	else
 	{
@@ -80,7 +80,6 @@ char *allocate_mem(char **buff, char *token, char *path, char *path_cpy)
 		free(path);
 		free(path_cpy);
 		free(buff);
-		perror("Allocate memory error\n");
 		exit(-1);
 	}
 	strcpy(test, token);

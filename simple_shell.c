@@ -42,7 +42,18 @@ void exit_program(char **buff, char *input, char *path)
  * Return: input.
  */
 
-char *_getline(char *path, int fd_isatty)
+/**
+ * not_found - 
+ *
+ */
+
+int not_found(char *argv[], int argc, char *cmnd)
+{
+	dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", argv[0], argc, cmnd);
+	return (127);
+}
+
+char *_getline(char *path, int ret, int fd_isatty)
 {
 	ssize_t ch_read = 0;
 	size_t in_size = 0;
@@ -56,7 +67,7 @@ char *_getline(char *path, int fd_isatty)
 			printf("\n");
 		free(input);
 		free(path);
-		exit(0);
+		exit(ret);
 	}
 	return (input);
 }
@@ -71,7 +82,7 @@ int main(int argc, char *argv[])
 {
 	const char *prompt = "$ ";
 	char *input = NULL, **buff = NULL, *cmnd = NULL, *path = NULL;
-	int fd_isatty = 0;
+	int fd_isatty = 0, ret = 0;
 
 	path = _getenv();
 	while (1)/*infinite while loop for the shell*/
@@ -79,7 +90,7 @@ int main(int argc, char *argv[])
 		fd_isatty = isatty(STDIN_FILENO);
 		if (fd_isatty)
 			printf("%s", prompt);
-		input = _getline(path, fd_isatty);
+		input = _getline(path, ret, fd_isatty);
 		buff = create_buff(input, path);
 		if (buff != NULL)
 		{
@@ -87,19 +98,19 @@ int main(int argc, char *argv[])
 				exit_program(buff, input, path);
 
 			else if (strcmp(buff[0], "env") == 0)
-				print_env();
+				ret = print_env();
 			else 
 			{
 				cmnd = strdup(buff[0]);
 				if (status(buff) == 0)
-					child_process(buff, path);
+					ret = child_process(buff, path);
 				else
 				{
 					buff[0] = _which(buff, path);
 					if (buff[0] != NULL)
-						child_process(buff, path);
+						ret = child_process(buff, path);
 					else
-						dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", argv[0], argc, cmnd);
+						ret = not_found(argv, argc, cmnd);
 				}
 				free(cmnd);
 			}
@@ -108,5 +119,5 @@ int main(int argc, char *argv[])
 		free(input);
 	}
 	free(path);
-	exit(0);
+	exit(ret);
 }
