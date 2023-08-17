@@ -3,13 +3,7 @@
 
 .SH SYNOPSIS
 
-	#include<sys/stat.h>
-	#include<sys/wait.h>
-	#include<fcntl.h>
-	#include<stdio.h>
-	#include<unistd.h>
-	#include<stdlib.h>
-	#include<string.h>
+	#include "shell.h"
 
 .SH DESCRIPTION
 
@@ -18,7 +12,6 @@
 	from standard input or a specified file.
 
 .SH OPERATION
-Compilation to start the shell: gcc -Wall -Wextra -Werror -pedant *.c -o hsh.
 
 .B Displays a prompt and waits for the user to type a command, the command line will terminate with a new line.
 
